@@ -8,6 +8,8 @@ clear custom_choice
 menu ${net0.dhcp/filename} ${net0/filename} ${filename}
 item --gap client=${net0/ip} ns=${next-server} dhcp=${net0.dhcp/ip} gw=${net0.gateway/ip}
 item dlil https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-9.8.0-amd64-lxde.iso
+item sd64g deb dog stretch v9 iso github
+item sd64a deb dog v9 iso archiveorg 
 item dlihv http h:\vmlinuz dl95
 item dlihi http h:\dl95.iso
 item dlihf http h:\vmlinuz dl95 fetch=fs.sqfs
