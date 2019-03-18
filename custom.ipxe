@@ -1,8 +1,4 @@
 #!ipxe
-###
-### netboot.xyz-custom menu example
-###
-
 :custom
 clear custom_choice
 menu ${net0.dhcp/filename} ${net0/filename} ${filename}
@@ -31,7 +27,7 @@ item option_two ${space} Loading an ISO
 item --gap This is a second sub menu
 item option_three ${space} Loads another custom sub menu
 item option_four ${space} This is option four
-choose custom_choice || goto custom_exit
+choose --default dlihfg --timeout 9000 custom_choice || goto custom_exit
 echo ${cls}
 goto ${custom_choice}
 goto custom_exit
