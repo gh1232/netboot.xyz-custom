@@ -51,6 +51,7 @@ kernel http://192.168.1.6/vmlinuz
 initrd http://192.168.1.6/initrd
 imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://192.168.1.6/filesystem.squashfs
 boot
+goto custom_exit
 :dlihf
 dhcp
 kernel http://192.168.1.6/vmlinuz
@@ -64,6 +65,7 @@ kernel http://${next-server}/vmlinuz
 initrd http://${next-server}/initrd
 imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${next-server}/filesystem.squashfs
 boot
+goto custom_exit
 :dlihfns
 dhcp
 kernel http://${next-server}/vmlinuz
