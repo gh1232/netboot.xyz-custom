@@ -32,6 +32,12 @@ item option_three ${space} Loads another custom sub menu
 item option_four ${space} This is option four
 choose --default dlihfgns --timeout 9000 custom_choice || goto custom_exit
 echo ${cls}
+ show dns 
+  echo gateway:         ${net0.gateway/ip}
+  echo dhcp:              ${net0.dhcp/ip}
+  echo client:              ${net0/ip}
+  echo next-server:     ${next-server}
+  echo filename:         ${net0.dhcp/filename} ${net0/filename} ${filename}
 goto ${custom_choice}
 goto custom_exit
 :hirenpe
@@ -194,13 +200,5 @@ initrd ${iso}
 kernel https://boot.netboot.xyz/memdisk raw iso
 boot || goto custom_exit
 :custom_exit
-  show dns 
-  echo gateway:         ${net0.gateway/ip}
-  echo dhcp:              ${net0.dhcp/ip}
-  echo client:              ${net0/ip}
-  echo next-server:     ${next-server}
-  echo filename:         ${net0.dhcp/filename} ${net0/filename} ${filename}
-
-
 #chain utils.ipxe
 #exit
