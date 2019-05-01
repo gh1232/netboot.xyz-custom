@@ -34,7 +34,7 @@ choose --default dlihfgns --timeout 9000 custom_choice || goto custom_exit
 echo ${cls}
 
 
-  isset ${next-server}  && set nserver ${next-server} || set nserver ${net0.dhcp/ip} 
+  isset ${next-server}  && set nserver ${next-server} || set nserver 192.168.1.2
 
 
  show dns 
