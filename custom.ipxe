@@ -5,14 +5,14 @@ menu ${net0.dhcp/filename} ${net0/filename} ${filename}
 item --gap client=${net0/ip} ns=${next-server} dhcp=${net0.dhcp/ip} gw=${net0.gateway/ip}
 item dlihfgns http h:\vmlinuz dl95 fetch=fs.sqfs gui ns
 item dlihfns http h:\vmlinuz dl95 fetch=fs.sqfs text ns
-item dlihfg http h:\vmlinuz dl95 fetch=fs.sqfs gui 1.6
-item dlihf http h:\vmlinuz dl95 fetch=fs.sqfs text 1.6
+item dlihfg http h:\vmlinuz dl95 fetch=fs.sqfs gui nss
+item dlihf http h:\vmlinuz dl95 fetch=fs.sqfs text nss
 item dlil https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-9.8.0-amd64-lxde.iso
 item sd64g deb dog stretch v9 iso github
 item sd64a deb dog v9 iso archiveorg 
 item dlihv http h:\vmlinuz dl95
 item dlihi http h:\dl95.iso
-item g4dt  tftp://192.168.1.6/grldr g4d
+item g4dt  tftp://${nserver}/grldr g4d
 item dli https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-9.8.0-amd64-xfce.iso
 item dlik https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-9.8.0-amd64-kde.iso
 item dlim https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-9.8.0-amd64-mate.iso
@@ -32,11 +32,17 @@ item option_three ${space} Loads another custom sub menu
 item option_four ${space} This is option four
 choose --default dlihfgns --timeout 9000 custom_choice || goto custom_exit
 echo ${cls}
+
+
+  isset ${next-server}  && set nserver ${next-server} || set nserver ${net0.dhcp/ip} 
+
+
  show dns 
   echo gateway:         ${net0.gateway/ip}
   echo dhcp:              ${net0.dhcp/ip}
   echo client:              ${net0/ip}
   echo next-server:     ${next-server}
+  echo nserver:           ${nserver}
   echo filename:         ${net0.dhcp/filename} ${net0/filename} ${filename}
 goto ${custom_choice}
 goto custom_exit
@@ -49,34 +55,34 @@ boot || goto custom_exit
 
 :g4dt
 dhcp 
-  chain tftp://192.168.1.6/grldr
+  chain tftp://${nserver}/grldr
   
 :dlihfg
 dhcp
-kernel http://192.168.1.6/vmlinuz
-initrd http://192.168.1.6/initrd
-imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://192.168.1.6/filesystem.squashfs
+kernel http://${nserver}/vmlinuz
+initrd http://${nserver}/initrd
+imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
 boot
 goto custom_exit
 :dlihf
 dhcp
-kernel http://192.168.1.6/vmlinuz
-initrd http://192.168.1.6/initrd
-imgargs vmlinuz boot=live components 3 persistence config hooks=filesystem  username=user noeject fetch=http://192.168.1.6/filesystem.squashfs
+kernel http://${nserver}/vmlinuz
+initrd http://${nserver}/initrd
+imgargs vmlinuz boot=live components 3 persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
 boot
 
 :dlihfgns
 dhcp
-kernel http://${next-server}/vmlinuz
-initrd http://${next-server}/initrd
-imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${next-server}/filesystem.squashfs
+kernel http://${nserver}/vmlinuz
+initrd http://${nserver}/initrd
+imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
 boot
 goto custom_exit
 :dlihfns
 dhcp
-kernel http://${next-server}/vmlinuz
-initrd http://${next-server}/initrd
-imgargs vmlinuz boot=live components 3 persistence config hooks=filesystem  username=user noeject fetch=http://${next-server}/filesystem.squashfs
+kernel http://${nserver}/vmlinuz
+initrd http://${nserver}/initrd
+imgargs vmlinuz boot=live components 3 persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
 boot
 :mtg
 dhcp
@@ -129,14 +135,14 @@ boot || goto custom_exit
 
 :dlihv
 dhcp
-kernel http://192.168.1.6/vmlinuz
-initrd http://102.168.1.6/initrd 
+kernel http://${nserver}/vmlinuz
+initrd http://${nserver}/initrd 
 boot || goto custom_exit
 
 :dlihi
 dhcp
 kernel https://boot.netboot.xyz/memdisk raw iso
-initrd http://192.168.1.6/dl95.iso
+initrd http://${nserver}/dl95.iso
 boot || goto custom_exit
 :dli
 dhcp
