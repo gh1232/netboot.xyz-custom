@@ -3,8 +3,10 @@
 clear custom_choice
 menu ${net0.dhcp/filename} ${net0/filename} ${filename}
 item --gap client=${net0/ip} ns=${next-server} dhcp=${net0.dhcp/ip} gw=${net0.gateway/ip}
-item dlihfg http h:\vmlinuz dl95 fetch=fs.sqfs gui
-item dlihf http h:\vmlinuz dl95 fetch=fs.sqfs text
+item dlihfgns http h:\vmlinuz dl95 fetch=fs.sqfs gui ns
+item dlihfns http h:\vmlinuz dl95 fetch=fs.sqfs text ns
+item dlihfg http h:\vmlinuz dl95 fetch=fs.sqfs gui 1.6
+item dlihf http h:\vmlinuz dl95 fetch=fs.sqfs text 1.6
 item dlil https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-9.8.0-amd64-lxde.iso
 item sd64g deb dog stretch v9 iso github
 item sd64a deb dog v9 iso archiveorg 
@@ -56,6 +58,18 @@ initrd http://192.168.1.6/initrd
 imgargs vmlinuz boot=live components 3 persistence config hooks=filesystem  username=user noeject fetch=http://192.168.1.6/filesystem.squashfs
 boot
 
+:dlihfgns
+dhcp
+kernel http://${next-server}/vmlinuz
+initrd http://${next-server}/initrd
+imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${next-server}/filesystem.squashfs
+boot
+:dlihfns
+dhcp
+kernel http://${next-server}/vmlinuz
+initrd http://${next-server}/initrd
+imgargs vmlinuz boot=live components 3 persistence config hooks=filesystem  username=user noeject fetch=http://${next-server}/filesystem.squashfs
+boot
 :mtg
 dhcp
 kernel https://boot.netboot.xyz/memdisk raw iso
