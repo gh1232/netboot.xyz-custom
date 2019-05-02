@@ -108,10 +108,10 @@ echo gateway:         ${net0.gateway/ip}
 echo -n 192 address ending: && read ending
 set nserver   192.168.1.${ending}
 dhcp
-kernel http://${nserver}/vmlinuz  || goto tryup
+kernel http://${nserver}/vmlinuz   || goto dlihfgnsask
 initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
-boot  || goto dlihfgnsask
+boot 
 goto custom_exit
 :dlihfns
 dhcp
