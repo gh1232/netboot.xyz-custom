@@ -50,6 +50,9 @@ echo ${cls}
   echo next-server:     ${next-server}
   echo nserver:           ${nserver}
   echo filename:         ${net0.dhcp/filename} ${net0/filename} ${filename}
+
+  prompt --key 0x02 --timeout 5000 Press Ctrl-B for the iPXE command line... && shell ||
+
 goto ${custom_choice}
 goto custom_exit
 :hirenpe
