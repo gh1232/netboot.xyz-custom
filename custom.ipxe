@@ -72,31 +72,31 @@ dhcp
   
 :dlihfg
 dhcp
-kernel http://${nserver}/vmlinuz
+kernel http://${nserver}/vmlinuz  || goto tryup
 initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
-boot  || goto tryup
+boot  
 goto custom_exit
 :dlihf
 dhcp
-kernel http://${nserver}/vmlinuz
+kernel http://${nserver}/vmlinuz  || goto tryup
 initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components 3 persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
-boot  || goto tryup
+boot  
 
 :dlihfgns
 dhcp
-kernel http://${nserver}/vmlinuz
+kernel http://${nserver}/vmlinuz  || goto tryup
 initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
-boot  || goto tryup
+boot  
 goto custom_exit
 :dlihfns
 dhcp
-kernel http://${nserver}/vmlinuz
+kernel http://${nserver}/vmlinuz  || goto tryup
 initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components 3 persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
-boot || goto tryup
+boot
 :mtg
 dhcp
 kernel https://boot.netboot.xyz/memdisk raw iso
@@ -148,15 +148,15 @@ boot || goto custom_exit
 
 :dlihv
 dhcp
-kernel http://${nserver}/vmlinuz
+kernel http://${nserver}/vmlinuz  || goto tryup
 initrd http://${nserver}/initrd 
-boot  || goto tryup
+boot 
 
 :dlihi
 dhcp
 kernel https://boot.netboot.xyz/memdisk raw iso
-initrd http://${nserver}/dl95.iso
-boot  || goto tryup
+initrd http://${nserver}/dl95.iso  || goto tryup
+boot  
 :dli
 dhcp
 kernel https://boot.netboot.xyz/memdisk raw iso
