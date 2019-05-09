@@ -39,7 +39,7 @@ item shell shell
 
 choose --default dlihfgns --timeout 9000 custom_choice || goto custom_exit
 echo ${cls}
-  set nserver 192.168.1.3
+  set nserver 192.168.1.2
   # isset ${next-server}  && set nserver ${next-server} || 
  # isset ${next-server} ||  iseq ${client} ${net0.dhcp/ip} || set nserver ${net0.dhcp/ip}
 
