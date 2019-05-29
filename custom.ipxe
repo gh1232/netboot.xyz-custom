@@ -41,9 +41,10 @@ item shell shell
 
 choose --default dlihfgdhcp --timeout 9000 custom_choice || goto custom_exit
 echo ${cls}
-  set nserver 192.168.1.2
+  # set nserver 192.168.1.2
   echo afterchoose ns= ${nserver}
   
+  goto :finlc
   set  lc:int32 1
   :inclc
   inc lc
@@ -54,8 +55,7 @@ echo ${cls}
   :finlc
 
   
-   isset ${next-server}  && set nserver ${next-server} && echo ns=next ||
-  # isset ${next-server}  || set nserver ${net0.dhcp/ip} 
+   isset ${next-server}  && set nserver ${next-server} && echo ns=next && goto ${custom_choice} ||
  # isset ${next-server} ||  iseq ${client} ${net0.dhcp/ip} || set nserver ${net0.dhcp/ip}
 
 echo
@@ -71,6 +71,7 @@ echo next-server:     ${next-server}
   echo nserver:           ${nserver}
   
   prompt --key 0x02 --timeout 5000 Press Ctrl-B for the iPXE command line... && shell ||
+   isset ${next-server}  || goto tryup 
 
 goto ${custom_choice}
 goto custom_exit
@@ -85,7 +86,9 @@ boot || goto custom_exit
  inc ctr
  echo tryup counter= ${ctr}
  
- iseq ${ctr} 11 && echo maxed   ||
+ iseq ${ctr} 11 && echo 11maxed && goto custom_exit
+  iseq ${ctr} 20 && echo 20maxed && goto custom_exit
+
 set nserver 192.168.1.${ctr}
 echo tryup  nserver= ${nserver}
 goto ${custom_choice}
