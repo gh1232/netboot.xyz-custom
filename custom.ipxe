@@ -48,7 +48,7 @@ echo ${cls}
   :inclc
   inc lc
   echo lc= ${lc}
-  iseq ${lc} 8 && goto custom_exit
+  iseq ${lc} 8 && goto custom_exit ||
   set lowestdhcp:ipv4 192.168.1.${lc} 
   ping --count 1 ${lowestdhcp} || goto inclc 
 
