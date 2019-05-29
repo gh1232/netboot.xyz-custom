@@ -86,6 +86,7 @@ boot || goto custom_exit
  
  iseq ${ctr} 11 && echo maxed   ||
 set nserver 192.168.1.${ctr}
+echo tryup  nserver= ${nserver}
 goto ${custom_choice}
 goto custom_exit
 
@@ -121,6 +122,7 @@ goto custom_exit
 :dlihfgdhcp
 dhcp 
 set nserver ${net0.dhcp/ip} 
+echo kernel ns= ${nserver}
 kernel http://${nserver}/vmlinuz  || goto tryup
 initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
