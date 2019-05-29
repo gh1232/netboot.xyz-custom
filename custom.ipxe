@@ -55,7 +55,7 @@ echo ${cls}
   :finlc
 
   
-   isset ${next-server}  && set nserver ${next-server} && echo ns=next && goto ${custom_choice} ||
+  # isset ${next-server}  && set nserver ${next-server} && echo ns=next && goto ${custom_choice} ||
  # isset ${next-server} ||  iseq ${client} ${net0.dhcp/ip} || set nserver ${net0.dhcp/ip}
 
 echo
@@ -71,7 +71,8 @@ echo next-server:     ${next-server}
   echo nserver:           ${nserver}
   
   prompt --key 0x02 --timeout 5000 Press Ctrl-B for the iPXE command line... && shell ||
-   isset ${next-server}  || goto tryup 
+  
+  goto tryup 
 
 goto ${custom_choice}
 goto custom_exit
