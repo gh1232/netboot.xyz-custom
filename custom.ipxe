@@ -4,6 +4,7 @@ clear custom_choice
 menu ${net0.dhcp/filename} ${net0/filename} ${filename}
 item --gap client=${net0/ip} ns=${next-server} dhcp=${net0.dhcp/ip} gw=${net0.gateway/ip}
 item dlihfgdhcp http h:\vmlinuz dl95 fetch=fs.sqfs gui dhcp
+item dlihfgauto http h:\vmlinuz dl95 fetch=fs.sqfs gui auto192ending
 item dlihfgns http h:\vmlinuz dl95 fetch=fs.sqfs gui ns
 item dlihfgnsask http h:\vmlinuz dl95 fetch=fs.sqfs gui askaddr
 item dlihfns http h:\vmlinuz dl95 fetch=fs.sqfs text ns
@@ -66,7 +67,9 @@ boot || goto custom_exit
 
 :tryup
  isset ctr || set ctr:int32 1
- inc ctr 
+ inc ctr
+ echo counter= ${ctr}
+ 
  iseq ${ctr} 11 && goto custom_exit 
 set nserver 192.168.1.${ctr}
 goto ${custom_choice}
@@ -90,6 +93,13 @@ initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components 3 persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
 boot  
 
+:dlihfgautowrong
+dhcp
+kernel http://${nserver}/vmlinuz  || goto tryup
+initrd http://${nserver}/initrd
+imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
+boot  
+goto custom_exit
 
 :dlihfgdhcp
 dhcp 
