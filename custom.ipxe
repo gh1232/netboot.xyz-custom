@@ -4,7 +4,7 @@ clear custom_choice
 menu ${net0.dhcp/filename} ${net0/filename} ${filename}
 item --gap client=${net0/ip} ns=${next-server} dhcp=${net0.dhcp/ip} gw=${net0.gateway/ip}
 item dlihfgdhcp http h:\vmlinuz dl95 fetch=fs.sqfs gui dhcp
-item dlihfgauto http h:\vmlinuz dl95 fetch=fs.sqfs gui auto192ending
+item dlihfgauto http h:\vmlinuz dl95 fetch=fs.sqfs gui auto192ending,lowestdhcp
 item dlihfgns http h:\vmlinuz dl95 fetch=fs.sqfs gui ns
 item dlihfgnsask http h:\vmlinuz dl95 fetch=fs.sqfs gui askaddr
 item dlihfns http h:\vmlinuz dl95 fetch=fs.sqfs text ns
@@ -42,6 +42,18 @@ item shell shell
 choose --default dlihfgdhcp --timeout 9000 custom_choice || goto custom_exit
 echo ${cls}
   set nserver 192.168.1.3
+  echo afterchoose ns= ${nserver}
+  
+  set  lc:int32 1
+  :inclc
+  inc lc
+  echo lc= ${lc}
+  iseq ${lc} 8 && goto custom_exit
+  set lowestdhcp 192.168.1.${lc} 
+  ping --count 1 ${lowestdhcp} || goto inclc 
+
+
+  
    isset ${next-server}  && set nserver ${next-server} ||
    isset ${next-server}  || set nserver ${net0.dhcp/ip} 
  # isset ${next-server} ||  iseq ${client} ${net0.dhcp/ip} || set nserver ${net0.dhcp/ip}
@@ -53,6 +65,7 @@ echo ${cls}
   echo client:              ${net0/ip}
   echo next-server:     ${next-server}
   echo nserver:           ${nserver}
+  echo lowestdhcp:     ${lowestdhcp}
   echo filename:         ${net0.dhcp/filename} ${net0/filename} ${filename}
 
   prompt --key 0x02 --timeout 5000 Press Ctrl-B for the iPXE command line... && shell ||
@@ -93,8 +106,11 @@ initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components 3 persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
 boot  
 
-:dlihfgautowrong
+:dlihfgauto
+echo afterdhcp: lowestdhcp= ${lowestdhcp}  nserver= ${nserver}
 dhcp
+set nserver ${lowestdhcp}
+echo beforedhcp: lowestdhcp= ${lowestdhcp}  nserver= ${nserver}
 kernel http://${nserver}/vmlinuz  || goto tryup
 initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
