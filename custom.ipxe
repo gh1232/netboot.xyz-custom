@@ -49,7 +49,7 @@ echo ${cls}
   inc lc
   echo lc= ${lc}
   iseq ${lc} 8 && goto custom_exit
-  set lowestdhcp 192.168.1.${lc} 
+  set lowestdhcp:ipv4 192.168.1.${lc} 
   ping --count 1 ${lowestdhcp} || goto inclc 
 
 
