@@ -48,10 +48,10 @@ echo ${cls}
   :inclc
   inc lc
   echo lc= ${lc}
-  iseq ${lc} 8 && goto custom_exit ||
+  iseq ${lc} 8 && echo maxed && goto finlc ||
   set lowestdhcp:ipv4 192.168.1.${lc} 
   ping --count 1 ${lowestdhcp} || goto inclc 
-
+  :finlc
 
   
    isset ${next-server}  && set nserver ${next-server} ||
@@ -81,7 +81,7 @@ boot || goto custom_exit
 :tryup
  isset ctr || set ctr:int32 1
  inc ctr
- echo counter= ${ctr}
+ echo tryup counter= ${ctr}
  
  iseq ${ctr} 11 && goto custom_exit 
 set nserver 192.168.1.${ctr}
