@@ -44,7 +44,7 @@ echo ${cls}
   # set nserver 192.168.1.2
   echo afterchoose ns= ${nserver}
   
-  goto :finlc
+  goto finlc
   set  lc:int32 1
   :inclc
   inc lc
