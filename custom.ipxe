@@ -135,6 +135,7 @@ goto custom_exit
 
 :dlihfgns
 dhcp
+echo dhlifgns ${nserver}
 kernel http://${nserver}/vmlinuz  || goto tryup
 initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
