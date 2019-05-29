@@ -86,8 +86,8 @@ boot || goto custom_exit
  inc ctr
  echo tryup counter= ${ctr}
  
- iseq ${ctr} 11 && echo 11maxed && goto custom_exit
-  iseq ${ctr} 20 && echo 20maxed && goto custom_exit
+ iseq ${ctr} 11 && echo 11maxed && goto custom_exit ||
+  iseq ${ctr} 20 && echo 20maxed && goto custom_exit ||
 
 set nserver 192.168.1.${ctr}
 echo tryup  nserver= ${nserver}
