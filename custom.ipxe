@@ -39,8 +39,9 @@ item shell shell
 
 choose --default dlihfgns --timeout 9000 custom_choice || goto custom_exit
 echo ${cls}
-  set nserver 192.168.1.2
-  # isset ${next-server}  && set nserver ${next-server} || 
+  set nserver 192.168.1.3
+   isset ${next-server}  && set nserver ${next-server} ||
+   isset ${next-server}  || set nserver ${net0.dhcp/ip} 
  # isset ${next-server} ||  iseq ${client} ${net0.dhcp/ip} || set nserver ${net0.dhcp/ip}
 
 
@@ -103,6 +104,8 @@ echo gateway:         ${net0.gateway/ip}
   echo next-server:     ${next-server}
   echo nserver:           ${nserver}
   echo filename:         ${net0.dhcp/filename} ${net0/filename} ${filename}
+   
+   set nserver ${net0.dhcp/ip} 
 
   prompt --key 0x02 --timeout 3000 Press Ctrl-B for the iPXE command line... && shell ||
 echo -n 192 address ending: && read ending
