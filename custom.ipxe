@@ -265,5 +265,7 @@ boot || goto custom_exit
  :shell
   shell
 :custom_exit
+echo custom_exit 
+echo exiting ipxe
 #chain utils.ipxe
 #exit
