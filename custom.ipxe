@@ -151,7 +151,7 @@ goto custom_exit
 :g4dtftp
  dhcp
  echo running grub4dos tftp 
- set nserver ${net0.dhcp/ip}
+ # set nserver ${net0.dhcp/ip}
  kernel tftp://${nserver}/grldr || goto tryup
 boot
 goto custom_exit
