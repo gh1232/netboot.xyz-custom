@@ -1,7 +1,8 @@
 #!ipxe
 :custom
+  cpair --foreground 7 --background 1 0
 clear custom_choice
-menu ${net0.dhcp/filename} ${net0/filename} ${filename}
+menu ${net0.dhcp/filename} ${net0/filename} ${filename} ipxeromeu.lkrn netbootxyzcustomeipxe
 item --gap client=${net0/ip} ns=${next-server} dhcp=${net0.dhcp/ip} gw=${net0.gateway/ip}
 item dlihfgdhcp http h:\vmlinuz dl95 fetch=fs.sqfs gui dhcp
 item dlihfg2 http h:\vmlinuz dl95 fetch=fs.sqfs gui .2
@@ -12,6 +13,7 @@ item dlihfgnsask http h:\vmlinuz dl95 fetch=fs.sqfs gui askaddr
 item dlihfns http h:\vmlinuz dl95 fetch=fs.sqfs text ns
 item dlihfg http h:\vmlinuz dl95 fetch=fs.sqfs gui nss
 item dlihf http h:\vmlinuz dl95 fetch=fs.sqfs text nss
+item g4dtftp grub4dos tftpd://grldr
 item dlil https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-9.8.0-amd64-lxde.iso
 item sd64g deb dog stretch v9 iso github
 item sd64a deb dog v9 iso archiveorg 
@@ -144,6 +146,14 @@ kernel http://${nserver}/vmlinuz  || goto tryup
 initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
 boot  
+goto custom_exit
+
+:g4dtftp
+ dhcp
+ echo running grub4dos tftp 
+ set nserver ${net0.dhcp/ip}
+ kernel tftp://${nserver}/grldr
+boot
 goto custom_exit
 
 :dlihfg2
