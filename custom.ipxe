@@ -9,7 +9,7 @@ item dlihfg2 http h:\vmlinuz dl95 fetch=fs.sqfs gui .2
 item dlihfg3 http h:\vmlinuz dl95 fetch=fs.sqfs gui .3
 item dlihfgauto http h:\vmlinuz dl95 fetch=fs.sqfs gui auto192ending,lowestdhcp
 item dlihfgns http h:\vmlinuz dl95 fetch=fs.sqfs gui ns
-item sd64h h:\memdisk h:\debdog.iso 256mb 
+item sd64h h:\memdisk.iso h:\debdog.iso 256mb 
 item sd64hnb netbootxyz\memdisk h:\debdog.iso
 item dlihfgnsask http h:\vmlinuz dl95 fetch=fs.sqfs gui askaddr
 item dlihfns http h:\vmlinuz dl95 fetch=fs.sqfs text ns
@@ -138,7 +138,7 @@ boot || goto custom_exit
 
 :sd64h
 dhcp
-kernel http://${nserver}/memdisk raw iso
+kernel http://${nserver}/memdisk.iso raw iso
 initrd http://${nserver}/debdog.iso
 boot || goto custom_exit
 
