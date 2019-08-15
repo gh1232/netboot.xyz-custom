@@ -138,6 +138,7 @@ boot || goto custom_exit
 
 :sd64h
 dhcp
+set nserver 192.168.1.2
 kernel http://${nserver}/memdisk.iso raw iso
 initrd http://${nserver}/debdog.iso
 boot || goto custom_exit
