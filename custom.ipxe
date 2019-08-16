@@ -16,6 +16,14 @@ item g4dt2g2w chain tftp://..1.2\grub2win\grldr
 item romt2g2w chain tftp://..1.2\grub2win\ipxeromeu.lkrn
 item g4dtns chain tftp://ns/grldr
 item romtns chain tftp://ns/ipxeromeu.lkrn
+item romt2ii chain tftp://..1.2\ipxeromeu.lkrn initrd one.ipxe
+item romt2ci chain tftp://..1.2\ipxeromeu.lkrn one.ipxe
+item ipxe2ci chain tftp://..1.2/ipxe.pxe one.ipxe
+item ipxe2ii chain tftp://..1.2\ipxe.pxe initrd one.ipxe
+item ipxelk2ci chain tftp://..1.2\ipxe16.lkrn one.ipxe
+item ipxelk2ii chain tftp://..1.2\ipxe16.lkrn initrd one.ipxe
+item ghci2ii chain tftp://..1.2\ghci.lkrn initrd one.ipxe
+item ghci2ci chain tftp://..1.2\ghci.krn one.ipxe
 item g4dtnsg2w chain tftp://ns/grub2win\grldr
 item romtnsg2w chain tftp://ns/grub2win\ipxeromeu.lkrn
 item sd64hnb netbootxyz\memdisk h:\debdog.iso
@@ -76,17 +84,17 @@ echo
 
  show dns 
  echo gateway client lowestdhcp filename 
-  echo  -n ${net0.gateway/ip}
-  echo -n                           ${net0/ip}
+  echo  -n g=${net0.gateway/ip}
+  echo -n                           c=${net0/ip}
   
-  echo -n                                               ${lowestdhcp}
-  echo                                                                        ${net0.dhcp/filename} ${net0/filename} ${filename}
+  echo -n                                               ld=${lowestdhcp}
+  echo                                                                        f=${net0.dhcp/filename} ${net0/filename} ${filename}
   echo
   
   echo dhcp                  next-server          nserver
-  echo -n ${net0.dhcp/ip}
-echo -n                       ${next-server}
-  echo -n                                          ${nserver}
+  echo -n d=${net0.dhcp/ip}
+echo -n                           n=${next-server}
+  echo                                                  ns=${nserver}
   
   prompt --key 0x02 --timeout 5000 Press Ctrl-B for the iPXE command line... && shell ||
   
@@ -117,6 +125,7 @@ goto custom_exit
 
 :g4dt
 dhcp 
+  initrd tftp://${nserver}/menu.lst
   chain tftp://${nserver}/grldr  || goto tryup
   
 goto custom_exit
@@ -124,32 +133,86 @@ goto custom_exit
 :g4dt2
 dhcp 
 set nserver 192.168.1.2
-  chain tftp://${nserver}/grldr  || goto tryup
+  initrd tftp://${nserver}/menu.lst
+
+  chain tftp://${nserver}/grldr  
 goto custom_exit
   
-  
+:romt2ii
+dhcp 
+set nserver 192.168.1.2
+  initrd tftp://${nserver}/one.ipxe
+  chain tftp://${nserver}/ipxeromeu.lkrn  
+goto custom_exit
+
+:romt2ci
+dhcp 
+set nserver 192.168.1.2
+  chain tftp://${nserver}/ipxeromeu.lkrn one.ipxe  
+goto custom_exit
+
+:ipxe2ii
+dhcp 
+set nserver 192.168.1.2
+  initrd tftp://${nserver}/one.ipxe
+  chain tftp://${nserver}/ipxe.pxe  
+goto custom_exit
+
+:ipxe2ci
+dhcp 
+set nserver 192.168.1.2
+  chain tftp://${nserver}/ipxe.pxe one.ipxe  
+goto custom_exit
+:ipxelk2ii
+dhcp 
+set nserver 192.168.1.2
+  initrd tftp://${nserver}/one.ipxe
+  chain tftp://${nserver}/ipxe16.lkrn  
+goto custom_exit
+
+:ipxelk2ci
+dhcp 
+set nserver 192.168.1.2
+  chain tftp://${nserver}/ipxe16.lkrn one.ipxe  
+goto custom_exit
+:ghci2ii
+dhcp 
+set nserver 192.168.1.2
+  initrd tftp://${nserver}/one.ipxe
+  chain tftp://${nserver}/ghci.krn  
+goto custom_exit
+
+:ghci2ci
+dhcp 
+set nserver 192.168.1.2
+  chain tftp://${nserver}/ghci.krn one.ipxe  
+goto custom_exit
+
 :romt2
 dhcp 
 set nserver 192.168.1.2
-  chain tftp://${nserver}/ipxeromeu.lkrn  || goto tryup
+  chain tftp://${nserver}/ipxeromeu.lkrn  
 goto custom_exit
   
  :g4dt2g2w
 dhcp 
 set nserver 192.168.1.2
-  chain tftp://${nserver}/grub2win/grldr  || goto tryup
+  initrd tftp://${nserver}/menu.lst
+
+chain tftp://${nserver}/grub2win/grldr 
 goto custom_exit
   
   
 :romt2g2w
 dhcp 
 set nserver 192.168.1.2
-  chain tftp://${nserver}/grub2win/ipxeromeu.lkrn  || goto tryup
+  chain tftp://${nserver}/grub2win/ipxeromeu.lkrn  
   goto custom_exit
 
     
 :g4dtns
 dhcp 
+  initrd tftp://${nserver}/menu.lst
 
   chain tftp://${nserver}/grldr  || goto tryup
 goto custom_exit
@@ -162,7 +225,9 @@ dhcp
 
 :g4dtnsg2w
 dhcp 
-  chain tftp://${nserver}/grub2win/grldr  || goto tryup
+  initrd tftp://${nserver}/menu.lst
+
+chain tftp://${nserver}/grub2win/grldr  || goto tryup
   goto custom_exit
   
 :romtnsg2w
@@ -200,7 +265,7 @@ goto custom_exit
 :sd64hnb
 dhcp
 kernel https://boot.netboot.xyz/memdisk raw iso
-initrd http://${nserver}/debdog.iso
+initrd http://${nserver}/debdog.iso || goto tryup
 boot || goto custom_exit
 
 :sd64h
@@ -224,7 +289,7 @@ goto custom_exit
 dhcp 
 set nserver 192.168.1.3
 echo kernel ns= ${nserver}
-kernel http://${nserver}/vmlinuz  || goto tryup
+kernel http://${nserver}/vmlinuz  
 initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
 boot  
@@ -242,7 +307,7 @@ goto custom_exit
 dhcp 
 set nserver 192.168.1.2 
 echo kernel ns= ${nserver}
-kernel http://${nserver}/vmlinuz  || goto tryup
+kernel http://${nserver}/vmlinuz  
 initrd http://${nserver}/initrd
 imgargs vmlinuz boot=live components persistence config hooks=filesystem  username=user noeject fetch=http://${nserver}/filesystem.squashfs
 boot  
@@ -257,12 +322,13 @@ boot
 goto custom_exit
 
 :dlihfgnsask
-echo gateway:         ${net0.gateway/ip}
-  echo dhcp:              ${net0.dhcp/ip}
-  echo client:              ${net0/ip}
-  echo next-server:     ${next-server}
-  echo nserver:           ${nserver}
-  echo filename:         ${net0.dhcp/filename} ${net0/filename} ${filename}
+echo -n g=${net0.gateway/ip}
+  echo ndf=${net0.dhcp/filename} nf=${net0/filename} f=${filename}
+
+echo -n d=${net0.dhcp/ip}
+  echo -n c=${net0/ip}
+  echo -n n=${next-server}
+  echo ns=${nserver}
    
    set nserver ${net0.dhcp/ip} 
 
