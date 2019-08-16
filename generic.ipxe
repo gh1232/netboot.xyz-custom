@@ -1,0 +1,32 @@
+#!ipxe
+  set cls ${esc:string}[2J  # ANSI clear screen sequence - "^[[2J"
+
+:custom 
+clear custom_choice
+menu ${net0.dhcp/filename} ${net0/filename} ${filename} ipxeromeu.lkrn netbootxyzcustomeipxe
+item --gap client=${net0/ip} ns=${next-server} dhcp=${net0.dhcp/ip} gw=${net0.gateway/ip}
+item dlihfgdhcp http h:\vmlinuz dl95 fetch=fs.sqfs gui dhcp
+
+
+choose --default dlihfgns --timeout 9000 custom_choice || goto custom_exit
+  
+
+
+set ${kernelurl}/${kernel} ${memdiskurl}/${memdisk} ${iso} ${raw}
+${initrdurl}/${initrd} ${initrdimg}
+
+
+:kmir
+
+${kernelurl}/${kernel} ${memdiskurl}/${memdisk} ${iso} ${raw}
+${initrdurl}/${initrd} ${initrdimg}
+boot || goto custom_exit
+
+ chain https://raw.githubusercontent.com/${user}/netboot.xyz-custom/master/custom1.ipxe || goto custom
+
+
+
+:custom_exit
+:end
+
+
