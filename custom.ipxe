@@ -12,6 +12,8 @@ item dlihfgns http h:\vmlinuz dl95 fetch=fs.sqfs gui ns
 item sd64h h:\memdisk.iso h:\debdog.iso 256mb 
 item g4dt2 chain tftp://..1.2\grldr
 item romt2 chain tftp://..1.2\ipxeromeu.lkrn
+item g4dt2g2w chain tftp://..1.2\grub2win\grldr
+item romt2g2w chain tftp://..1.2\grub2win\ipxeromeu.lkrn
 item sd64hnb netbootxyz\memdisk h:\debdog.iso
 item dlihfgnsask http h:\vmlinuz dl95 fetch=fs.sqfs gui askaddr
 item dlihfns http h:\vmlinuz dl95 fetch=fs.sqfs text ns
@@ -120,6 +122,17 @@ set nserver 192.168.1.2
 dhcp 
 set nserver 192.168.1.2
   chain tftp://${nserver}/ipxeromeu.lkrn  || goto tryup
+  
+ :g4dt2g2w
+dhcp 
+set nserver 192.168.1.2
+  chain tftp://${nserver}/grub2win/grldr  || goto tryup
+  
+  
+:romt2g2w
+dhcp 
+set nserver 192.168.1.2
+  chain tftp://${nserver}/grub2win/ipxeromeu.lkrn  || goto tryup
   
   
 :dlihfg
