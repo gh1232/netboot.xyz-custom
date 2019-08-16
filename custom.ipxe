@@ -69,20 +69,24 @@ echo ${cls}
   :finlc
 
   
-   isset ${next-server}  && set nserver ${next-server} && echo ns=next && goto ${custom_choice} ||
+   isset ${next-server}  && set nserver ${next-server} && echo isset.ns=${nserver}  && goto ${custom_choice} ||
  # isset ${next-server} ||  iseq ${client} ${net0.dhcp/ip} || set nserver ${net0.dhcp/ip}
 
 echo
 
  show dns 
-  echo gateway:         ${net0.gateway/ip}
-  echo client:              ${net0/ip}
+ echo gateway client lowestdhcp filename 
+  echo  -n ${net0.gateway/ip}
+  echo -n                           ${net0/ip}
   
-  echo lowestdhcp:     ${lowestdhcp}
-  echo filename:         ${net0.dhcp/filename} ${net0/filename} ${filename}
-  echo dhcp:              ${net0.dhcp/ip}
-echo next-server:     ${next-server}
-  echo nserver:           ${nserver}
+  echo -n                                               ${lowestdhcp}
+  echo                                                                        ${net0.dhcp/filename} ${net0/filename} ${filename}
+  echo
+  
+  echo dhcp                  next-server          nserver
+  echo -n ${net0.dhcp/ip}
+echo -n                       ${next-server}
+  echo -n                                          ${nserver}
   
   prompt --key 0x02 --timeout 5000 Press Ctrl-B for the iPXE command line... && shell ||
   
@@ -97,16 +101,16 @@ kernel https://boot.netboot.xyz/memdisk raw iso
 boot || goto custom_exit
 
 :tryup
- isset ctr || set ctr:int32 2
+ isset ctr || set ctr:int32 1
+inc ctr 
+ # echo tryup counter= ${ctr}
  
- echo tryup counter= ${ctr}
- 
- iseq ${ctr} 11 && echo 11maxed && goto custom_exit ||
-  iseq ${ctr} 20 && echo 20maxed && goto custom_exit ||
+ iseq ${ctr} 6 && echo 11maxed && goto custom_exit ||
+  iseq ${ctr} 7 && echo 20maxed && goto custom_exit ||
 
 set nserver 192.168.1.${ctr}
-echo tryup  nserver= ${nserver}
-inc ctr
+# echo tryup  nserver= ${nserver}
+
 
 goto ${custom_choice}
 goto custom_exit
