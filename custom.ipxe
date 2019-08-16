@@ -14,6 +14,10 @@ item g4dt2 chain tftp://..1.2\grldr
 item romt2 chain tftp://..1.2\ipxeromeu.lkrn
 item g4dt2g2w chain tftp://..1.2\grub2win\grldr
 item romt2g2w chain tftp://..1.2\grub2win\ipxeromeu.lkrn
+item g4dtns chain tftp://ns/grldr
+item romtns chain tftp://ns/ipxeromeu.lkrn
+item g4dtnsg2w chain tftp://ns/grub2win\grldr
+item romtnsg2w chain tftp://ns/grub2win\ipxeromeu.lkrn
 item sd64hnb netbootxyz\memdisk h:\debdog.iso
 item dlihfgnsask http h:\vmlinuz dl95 fetch=fs.sqfs gui askaddr
 item dlihfns http h:\vmlinuz dl95 fetch=fs.sqfs text ns
@@ -111,28 +115,57 @@ goto custom_exit
 dhcp 
   chain tftp://${nserver}/grldr  || goto tryup
   
+goto custom_exit
   
 :g4dt2
 dhcp 
 set nserver 192.168.1.2
   chain tftp://${nserver}/grldr  || goto tryup
+goto custom_exit
   
   
 :romt2
 dhcp 
 set nserver 192.168.1.2
   chain tftp://${nserver}/ipxeromeu.lkrn  || goto tryup
+goto custom_exit
   
  :g4dt2g2w
 dhcp 
 set nserver 192.168.1.2
   chain tftp://${nserver}/grub2win/grldr  || goto tryup
+goto custom_exit
   
   
 :romt2g2w
 dhcp 
 set nserver 192.168.1.2
   chain tftp://${nserver}/grub2win/ipxeromeu.lkrn  || goto tryup
+  goto custom_exit
+
+    
+:g4dtns
+dhcp 
+
+  chain tftp://${nserver}/grldr  || goto tryup
+goto custom_exit
+  
+  
+:romtns
+dhcp 
+  chain tftp://${nserver}/ipxeromeu.lkrn  || goto tryup
+  goto custom_exit
+
+:g4dtnsg2w
+dhcp 
+  chain tftp://${nserver}/grub2win/grldr  || goto tryup
+  goto custom_exit
+  
+:romtnsg2w
+dhcp 
+
+  chain tftp://${nserver}/grub2win/ipxeromeu.lkrn  || goto tryup
+goto custom_exit
   
   
 :dlihfg
