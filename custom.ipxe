@@ -126,16 +126,19 @@ goto custom_exit
 :g4dt
 dhcp 
   initrd tftp://${nserver}/menu.lst
-  chain tftp://${nserver}/grldr  || goto tryup
+  chain tftp://${nserver}/grldr   ||   chain tftp://${nserver}/grub/grub.exe ||  kernel tftp://${nserver}/grub/grub.exe ||   chain tftp://${nserver}/grub/grldr   
+|| goto tryup
   
 goto custom_exit
-  
+
 :g4dt2
 dhcp 
 set nserver 192.168.1.2
   initrd tftp://${nserver}/menu.lst
 
-  chain tftp://${nserver}/grldr  
+  chain tftp://${nserver}/grldr  ||   chain tftp://${nserver}/grub/grub.exe ||  kernel tftp://${nserver}/grub/grub.exe   
+ 
+
 goto custom_exit
   
 :romt2ii
@@ -199,7 +202,8 @@ dhcp
 set nserver 192.168.1.2
   initrd tftp://${nserver}/menu.lst
 
-chain tftp://${nserver}/grub2win/grldr 
+chain tftp://${nserver}/grub2win/grldr ||   chain tftp://${nserver}/grldr  ||   chain tftp://${nserver}/grub/grub.exe ||  kernel tftp://${nserver}/grub/grub.exe   
+ 
 goto custom_exit
   
   
@@ -227,7 +231,8 @@ dhcp
 dhcp 
   initrd tftp://${nserver}/menu.lst
 
-chain tftp://${nserver}/grub2win/grldr  || goto tryup
+chain tftp://${nserver}/grub2win/grldr ||   chain tftp://${nserver}/grldr  ||   chain tftp://${nserver}/grub/grub.exe ||  kernel tftp://${nserver}/grub/grub.exe   
+ || goto tryup
   goto custom_exit
   
 :romtnsg2w
