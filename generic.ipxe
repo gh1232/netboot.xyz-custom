@@ -22,9 +22,15 @@ ${kernelurl}/${kernel} ${memdiskurl}/${memdisk} ${iso} ${raw}
 ${initrdurl}/${initrd} ${initrdimg}
 boot || goto custom_exit
 
- chain https://raw.githubusercontent.com/${user}/netboot.xyz-custom/master/custom1.ipxe || goto custom
+ chain https://raw.githubusercontent.com/${user}/netboot.xyz-custom/master/custom1.ipxe || goto custo_exit
+ 
 
-
+ title kernel initrd ipxe 
+  kernel (hd0,0)/ipxe.lkrn
+  initrd myscript.ipxe
+    
+ title kernel  ipxe
+    kernel (hd0,0)/ipxe.lkrn dhcp && chain http://bootserver/boot.php
 
 :custom_exit
 :end
