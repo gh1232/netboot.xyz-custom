@@ -9,6 +9,7 @@ item dlihfg2 http h:\vmlinuz dl95 fetch=fs.sqfs gui .2
 item dlihfg3 http h:\vmlinuz dl95 fetch=fs.sqfs gui .3
 item dlihfgauto http h:\vmlinuz dl95 fetch=fs.sqfs gui auto192ending,lowestdhcp
 item dlihfgns http h:\vmlinuz dl95 fetch=fs.sqfs gui ns
+item ghgi github https://github.com/gh1232/netboot.xyz-custom/blob/master/generic.ipxe
 item sd64h h:\memdisk.iso h:\debdog.iso 256mb 
 item g4dt2 chain tftp://..1.2\grldr
 item romt2 chain tftp://..1.2\ipxeromeu.lkrn
@@ -122,6 +123,12 @@ set nserver 192.168.1.${ctr}
 
 goto ${custom_choice}
 goto custom_exit
+
+:ghgi
+dhcp 
+chain https://github.com/gh1232/netboot.xyz-custom/blob/master/generic.ipxe
+goto custom_exit 
+
 
 :g4dt
 dhcp 
