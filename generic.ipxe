@@ -1,36 +1,67 @@
 #!ipxe
-  set cls ${esc:string}[2J  # ANSI clear screen sequence - "^[[2J"
+ # set cls ${esc:string}[2J  # ANSI clear screen sequence - "^[[2J"
+set defaultchoice 'd9'
+
+
+set mi 'd9' 
+set ml 'deb9live'
+set kernelurl ''
+set kernel ''
+set memdiskurl ''
+set memdisk ''
+set initrdurl ''
+set initrd ''
+set initrdimg ''
+
+goto createitem${mi}
+:back${mi}
+#goto kmir${mi}
+
+set mi 'u' 
+set ml 'ulive'
+set kernelurl ''
+set kernel ''
+set memdiskurl ''
+set memdisk ''
+set initrdurl ''
+set initrd ''
+set initrdimg ''
+
+goto createitem${mi}
+:back${mi}
+#goto kmir${mi}
+
+
 
 :custom 
 clear custom_choice
 menu ${net0.dhcp/filename} ${net0/filename} ${filename} ipxeromeu.lkrn netbootxyzcustomeipxe
 item --gap client=${net0/ip} ns=${next-server} dhcp=${net0.dhcp/ip} gw=${net0.gateway/ip}
-item dlihfgdhcp http h:\vmlinuz dl95 fetch=fs.sqfs gui dhcp
+# item dlihfgdhcp http h:\vmlinuz dl95 fetch=fs.sqfs gui dhcp
 
-
-choose --default dlihfgns --timeout 9000 custom_choice || goto custom_exit
+:createitem${mi}
+item ${mi} {ml}
+goto back{$mi}
   
 
 
-set ${kernelurl}/${kernel} ${memdiskurl}/${memdisk} ${iso} ${raw}
-${initrdurl}/${initrd} ${initrdimg}
 
-
-:kmir
+:kmir${mi}
 
 ${kernelurl}/${kernel} ${memdiskurl}/${memdisk} ${iso} ${raw}
 ${initrdurl}/${initrd} ${initrdimg}
 boot || goto custom_exit
 
- chain https://raw.githubusercontent.com/${user}/netboot.xyz-custom/master/custom1.ipxe || goto custo_exit
+# chain https://raw.githubusercontent.com/${user}/netboot.xyz-custom/master/custom1.ipxe || goto custo_exit
  
+choose --default ${defaultchoice} --timeout 9000 custom_choice || goto custom_exit
 
- title kernel initrd ipxe 
-  kernel (hd0,0)/ipxe.lkrn
-  initrd myscript.ipxe
+ #title kernel initrd ipxe 
+ # kernel (hd0,0)/ipxe.lkrn
+ # initrd myscript.ipxe
     
- title kernel  ipxe
-    kernel (hd0,0)/ipxe.lkrn dhcp && chain http://bootserver/boot.php
+ #title kernel  ipxe
+ #   kernel (hd0,0)/ipxe.lkrn dhcp && chain http://bootserver/boot.php
 
 :custom_exit
 :end
