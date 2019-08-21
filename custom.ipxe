@@ -17,6 +17,8 @@ item g4dt2g2w chain tftp://..1.2\grub2win\grldr
 item romt2g2w chain tftp://..1.2\grub2win\ipxeromeu.lkrn
 item g4dtns chain tftp://ns/grldr
 item romtns chain tftp://ns/ipxeromeu.lkrn
+item ntbootvhd ntboot vhd
+item vhdbootmgr vhd/bootmgr
 item romt2ii chain tftp://..1.2\ipxeromeu.lkrn initrd one.ipxe
 item romt2ci chain tftp://..1.2\ipxeromeu.lkrn one.ipxe
 item ipxe2ci chain tftp://..1.2/ipxe.pxe one.ipxe
@@ -123,6 +125,23 @@ set nserver 192.168.1.${ctr}
 
 goto ${custom_choice}
 goto custom_exit
+
+:ntbootvhd
+#map --mem /ntboot.iso (0xff)
+#map --hook
+#(0xff)/NTBOOT NT6=()/WIN.VHD
+#boot
+goto custom_exit
+
+# dd if=/dev/sda of=/path/to/image.iso
+
+:vhdbootmgr
+#find --set-root /Myl33t7.vhd
+#map /Myl33t7.vhd (hd31)
+#root (hd31)
+#chainload /BOOTMGR
+#boot
+got custom_exit
 
 :ghgi
 dhcp 
