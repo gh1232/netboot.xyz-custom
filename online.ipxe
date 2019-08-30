@@ -15,10 +15,11 @@ item cpuid cpuid
 item shell shell
 
 choose --default docker --timeout 9000 custom_choice || goto custom_exit
-
+echo online.ipxe ...
 
 :core 
 dhcp 
+echo core.iso...
 kernel https://boot.netboot.xyz/memdisk raw iso
 initrd http://tinycorelinux.net/10.x/x86/release/Core-current.iso
 boot || goto custom_exit
@@ -36,6 +37,7 @@ boot || goto custom_exit
 
 :docker
 dhcp 
+echo docker.iso ...
 kernel https://boot.netboot.xyz/memdisk raw iso
 initrd http://tinycorelinux.net/10.x/x86/release/Core-current.iso
 boot || goto custom_exit
