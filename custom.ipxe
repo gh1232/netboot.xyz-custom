@@ -7,6 +7,7 @@ item --gap client=${net0/ip} ns=${next-server} dhcp=${net0.dhcp/ip} gw=${net0.ga
 item dlihfgdhcp http h:\vmlinuz dl95 fetch=fs.sqfs gui dhcp
 item dlihfg2 http h:\vmlinuz dl95 fetch=fs.sqfs gui .2
 item dlihfg3 http h:\vmlinuz dl95 fetch=fs.sqfs gui .3
+item online online.ipxe core docker
 item dlihfgauto http h:\vmlinuz dl95 fetch=fs.sqfs gui auto192ending,lowestdhcp
 item dlihfgns http h:\vmlinuz dl95 fetch=fs.sqfs gui ns
 item ghgi github https://github.com/gh1232/netboot.xyz-custom/blob/master/generic.ipxe
@@ -155,6 +156,11 @@ dhcp
   chain tftp://${nserver}/grldr   ||   chain tftp://${nserver}/grub/grub.exe ||  kernel tftp://${nserver}/grub/grub.exe ||   chain tftp://${nserver}/grub/grldr   
 || goto tryup
   
+goto custom_exit
+
+:online 
+dhcp
+chain https://github.com/gh1232/netboot.xyz-custom/blob/master/online.ipxe
 goto custom_exit
 
 :g4dt2
