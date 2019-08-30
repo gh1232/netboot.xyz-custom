@@ -15,7 +15,7 @@ item config config
 item cpuid cpuid 
 item shell shell
 
-choose --default dlihfgns --timeout 9000 custom_choice || goto custom_exit
+choose --default docker --timeout 9000 custom_choice || goto custom_exit
 
 
 :core 
