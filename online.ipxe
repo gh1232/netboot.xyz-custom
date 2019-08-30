@@ -8,7 +8,6 @@ item core core.iso 11mb
 item tinycore tinycore.iso 16mb 
 item coreplus coreplus.iso 106mb
 item docker boot2docker.isop 45mb 
-
 item reboot reboot
 item poweroff poweroff
 item config config
