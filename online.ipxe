@@ -16,46 +16,7 @@ item cpuid cpuid
 item shell shell
 
 choose --default dlihfgns --timeout 9000 custom_choice || goto custom_exit
-echo ${cls}
-  # set nserver 192.168.1.2
-  echo afterchoose ns= ${nserver}
-  
-  goto finlc
-  set  lc:int32 1
-  :inclc
-  inc lc
-  echo lc= ${lc}
-  iseq ${lc} 8 && echo maxed && goto finlc ||
-  set lowestdhcp:ipv4 192.168.1.${lc} 
-  ping --count 1 ${lowestdhcp} || goto inclc 
-  :finlc
 
-  
-   isset ${next-server}  && set nserver ${next-server} && echo isset.ns=${nserver}  && goto ${custom_choice} ||
- # isset ${next-server} ||  iseq ${client} ${net0.dhcp/ip} || set nserver ${net0.dhcp/ip}
-
-echo
-
- show dns 
- echo gateway client lowestdhcp filename 
-  echo  -n g=${net0.gateway/ip}
-  echo -n                           c=${net0/ip}
-  
-  echo -n                                               ld=${lowestdhcp}
-  echo                                                                        f=${net0.dhcp/filename} ${net0/filename} ${filename}
-  echo
-  
-  echo dhcp                  next-server          nserver
-  echo -n d=${net0.dhcp/ip}
-echo -n                           n=${next-server}
-  echo                                                  ns=${nserver}
-  
-  prompt --key 0x02 --timeout 5000 Press Ctrl-B for the iPXE command line... && shell ||
-  
-  isset ${next-server} ||  goto tryup 
-
-goto ${custom_choice}
-goto custom_exit
 
 :core 
 dhcp 
