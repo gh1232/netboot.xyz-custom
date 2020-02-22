@@ -7,6 +7,7 @@ item --gap client=${net0/ip} ns=${next-server} dhcp=${net0.dhcp/ip} gw=${net0.ga
 item dlihfgdhcp http h:\vmlinuz dl95 fetch=fs.sqfs gui dhcp
 item dlihfg2 http h:\vmlinuz dl95 fetch=fs.sqfs gui .2
 item dlihfg3 http h:\vmlinuz dl95 fetch=fs.sqfs gui .3
+item ipxecfg ipxe/config menu
 item dlki deb 9 live kernel initrd only
 item online online.ipxe core docker
 item dlihfgauto http h:\vmlinuz dl95 fetch=fs.sqfs gui auto192ending,lowestdhcp
@@ -87,7 +88,7 @@ echo ${cls}
 
 echo
 
- show dns 
+ show dns ||
  echo gateway client lowestdhcp filename 
   echo  -n g=${net0.gateway/ip}
   echo -n                           c=${net0/ip}
@@ -160,6 +161,10 @@ dhcp
 chain https://github.com/gh1232/netboot.xyz-custom/blob/master/generic.ipxe
 goto custom_exit 
 
+:ipxecfg 
+ dhcp
+ config
+goto custom
 
 :g4dt
 dhcp 
